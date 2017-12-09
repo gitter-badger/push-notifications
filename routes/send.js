@@ -1,12 +1,12 @@
-import express from 'express';
-import webpush from 'web-push';
+import express from 'express'
+import webpush from 'web-push'
 
-const router = express.Router();
+const router = express.Router()
 
 /* GET index page. */
 router.get('/', (req, res) => {
-  res.render('send');
-});
+  res.render('send')
+})
 
 router.post('/', (req, res) => {
   const options = {
@@ -17,7 +17,7 @@ router.post('/', (req, res) => {
     },
     // 1 hour in seconds.
     TTL: 60 * 60
-  };
+  }
 
   webpush.sendNotification(
     req.body.subscription,
@@ -25,15 +25,15 @@ router.post('/', (req, res) => {
     options
   )
     .then(() => {
-      res.status(200).send({ success: true });
+      res.status(200).send({ success: true })
     })
     .catch((err) => {
       if (err.statusCode) {
-        res.status(err.statusCode).send(err.body);
+        res.status(err.statusCode).send(err.body)
       } else {
-        res.status(400).send(err.message);
+        res.status(400).send(err.message)
       }
-    });
-});
+    })
+})
 
-export default router;
+export default router
