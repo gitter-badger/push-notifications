@@ -2,11 +2,10 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="author" content="Semih Onay">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Push Bildirimleri Test Alanı</title>
-
+  <title>Register to Push Messaging</title>
   <link rel="stylesheet" href="public/stylesheets/icons">
   <link rel="stylesheet" href="public/stylesheets/material.indigo-orange.min.css">
   <script defer src="public/javascripts/material.min.js"></script>
@@ -16,20 +15,19 @@
 <body>
 
   <header>
-    <h1>Push Bildirimleri Test Alanı</h1>
+    <h1>Register to Push Messaging</h1>
   </header>
 
   <main>
-    <p>Aşağıdaki butonun aktif duruma gelebilmesi için Push hizmetinin tarayıcı tarafından desteklenmesi gerekiyor</p>
+    <p>Button should be enabled if your browser supports Service Workers.</p>
     <p>
       <button disabled class="js-push-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-        Push Mesajları için Kayıt Ol
+        Register for Notifications
       </button>
     </p>
     <section class="subscription-details js-subscription-details is-invisible">
-      <p>Kullanıcı kayıt olduktan sonra, kullanıcının kayıt bilgilerini sunucuya gönder ver veritabanına kayıt et.</p>
-      <p>Push mesajı göndermek için linke tıklayınız. <a href="send-msg">Push Gönder</a>
-      kayıt aşamasında kullanmış olduğunuz publicKey ile sayfadakinin aynı olmasına dikkat ediniz.</p>
+      <p>To send push message with data payload click <a id="send-msg" href="/send-msg" data="">Send Push</a>
+      Double check that your public&private keys are matching.Otherwise, you can't send or receive push messages from this server</p>
       <pre><code class="js-subscription-json"></code></pre>
     </section>
   </main>
