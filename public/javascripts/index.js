@@ -1,5 +1,5 @@
 /* eslint-env browser, es6 */
-const applicationServerPublicKey = 'BOYPM7MufJXSqnxANhnhfKvB6kn2bCtu8Iya3B9mD5nMd6GEjrRavUhiVekFyhm_V1WvpsGKbRp-iq5wkCXRvBY'
+const applicationServerPublicKey = 'BOc7Jx1DZIF6HFesS2uUlDHn6-E32UNHrcN2P8rblCgUvcwMETrlhxEeui7UDOX4Po2jurxb8bJhIWpgn4RlB-w'
 const applicationServerPrivateKey = 'TV7TykD-S7PIEG8MPfBHht5iwmz4rXpX584MnxDzuSU'
 
 const pushButton = document.querySelector('.js-push-btn')
@@ -33,7 +33,13 @@ function updateBtn () {
 }
 
 function updateSubscriptionOnServer (subscription) {
-  // TODO: Send subscription to application server
+  fetch('/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({subscription: subscription})
+  })
 
   const subscriptionJson = document.querySelector('.js-subscription-json')
   const subscriptionDetails =
@@ -45,6 +51,25 @@ function updateSubscriptionOnServer (subscription) {
   } else {
     subscriptionDetails.classList.add('is-invisible')
   }
+}
+function unsubscribeUser () {
+  swRegistration.pushManager.getSubscription()
+    .then(function (subscription) {
+      if (subscription) {
+        return subscription.unsubscribe()
+      }
+    })
+    .catch(function (error) {
+      console.log('Error unsubscribing', error)
+    })
+    .then(function () {
+      // updateSubscriptionOnServer(null)
+
+      console.log('User is unsubscribed.')
+      isSubscribed = false
+
+      updateBtn()
+    })
 }
 
 function subscribeUser () {
@@ -72,7 +97,7 @@ function initializeUI () {
   pushButton.addEventListener('click', () => {
     pushButton.disabled = true
     if (isSubscribed) {
-      // TODO: Unsubscribe user
+      unsubscribeUser()
     } else {
       subscribeUser()
     }

@@ -42,12 +42,6 @@
     <section>
       <h3>Codelab Message Sending</h3>
 
-      <p>
-        When you are going through our
-        <a href="https://developers.google.com/web/fundamentals/getting-started/codelabs/push-notifications/">push codelab</a>
-        you can send a message below.
-      </p>
-
       <h6><strong>Subscription to Send To</strong></h6>
       <div class="mdl-textfield mdl-js-textfield">
         <textarea class="mdl-textfield__input" type="text" rows= "3" id="push-subscription" ></textarea>
@@ -66,31 +60,26 @@
         </button>
       </p>
     </section>
+    <div class="modal fade" id="myModal" role="dialog" hidden>
+    <div class="modal-dialog">
 
-    <section>
-      <h3>Sending Messages from Your Server</h3>
-      <div class="sending-own-server">
-        <p>
-          This site is here to make it easy to get going
-          with sending a push message, but it's obviously not helpful for sending
-          push messages from your site.
-        </p>
-        <p>
-          To send push messages from your own server,
-          <a href="https://github.com/web-push-libs/">use one of the libraries
-          available here</a>.
-        </p>
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" id="error-message-title"></h4>
+        </div>
+        <div class="modal-body">
+          <pre id="error-message"></pre>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
       </div>
-    </section>
 
-  </main>
-
-  <footer>
-    <div>
-      The code for this site is <a href="https://glitch.com/edit/#!/web-push-codelab">on Glitch</a> and the <a href="https://codelabs.developers.google.com/codelabs/push-notifications/">codelab is here</a>.
     </div>
-  </footer>
-
+  </div>
+  </main>
   <script src="../public/javascripts/keys.js"></script>
   <script src="../public/javascripts/send.js"></script>
   <script src="../public/javascripts/material.min.js"></script>

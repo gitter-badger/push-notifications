@@ -1,11 +1,11 @@
 self.addEventListener('push', (event) => {
   let notificationData = event.data.text()
-  console.log('Push received  : ', notificationData)
+  console.log('Push message : ', notificationData)
 
   const title = notificationData
-  const body = 'We have received a push message.'
+  const body = 'Received a push message.'
   const icon = '/images/icon-192x192.png'
-  const tag = 'simple-push-demo-notification-tag'
+  const tag = 'notification-tag'
 
   event.waitUntil(
     self.registration.showNotification(title, {
@@ -16,13 +16,8 @@ self.addEventListener('push', (event) => {
   )
 })
 self.addEventListener('notificationclick', (event) => {
-  console.log('On notification click: ', event.notification.tag)
-  // Android doesn't close the notification when you click on it
-  // See: http://crbug.com/463146
+  console.log('Notification Click: ', event.notification.tag)
   event.notification.close()
-
-  // This looks to see if the current is already open and
-  // focuses if it is
   event.waitUntil(
     clients.matchAll({
       type: 'window'
@@ -37,4 +32,8 @@ self.addEventListener('notificationclick', (event) => {
         }
       })
   )
+})
+self.addEventListener('notificationclose', (event) => {
+  console.log('Notification Close: ', event.notification)
+  event.notification.close()
 })

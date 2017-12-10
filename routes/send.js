@@ -11,9 +11,9 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   const options = {
     vapidDetails: {
-      subject: 'https://developers.google.com/web/fundamentals/',
-      publicKey: req.body.applicationKeys.public,
-      privateKey: req.body.applicationKeys.private
+      subject: 'mailto:semih.onay@bilgiedu.net',
+      publicKey: process.env.PUBLIC_KEY,
+      privateKey: process.env.PRIVATE_KEY
     },
     // 1 hour in seconds.
     TTL: 60 * 60
