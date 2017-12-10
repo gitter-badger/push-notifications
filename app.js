@@ -4,12 +4,28 @@ import Debug from 'debug'
 import express from 'express'
 import logger from 'morgan'
 import path, { dirname } from 'path'
-import opbeat from 'opbeat'
 // import favicon from 'serve-favicon';
 
 import index from './routes/index'
 import register from './routes/register'
 import send from './routes/send'
+import mongoose from 'mongoose'
+
+// Connect to DB
+mongoose.connect(process.env.DB)
+mongoose.connection.on('open', (ref) => {
+  return console.log('Connected to mongo server.')
+})
+mongoose.connection.on('error', function (err) {
+  console.log('Could not connect to mongo server!')
+  return console.log(err)
+})
+// add this to the VERY top of the first file loaded in your app
+const opbeat = require('opbeat').start({
+  appId: '76bfe95471',
+  organizationId: 'bf09f7ac168f48adb9a7acce37ecfde0',
+  secretToken: '841a590acc78fe16275fbb613956fc8871f0085f'
+})
 
 const result = require('dotenv').config()
 if (result.error) {
@@ -38,9 +54,6 @@ app.use('/', index)
 app.use('/register', register)
 app.use('/send-msg', send)
 
-// Add the Opbeat middleware after your regular middleware
-app.use(opbeat.middleware.express())
-
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   const err = new Error('Not Found')
@@ -64,5 +77,7 @@ process.on('uncaughtException', (err) => {
   debug('Caught exception: %j', err)
   process.exit(1)
 })
+
+app.use(opbeat.middleware.express())
 
 export default app

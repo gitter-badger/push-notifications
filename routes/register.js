@@ -1,17 +1,15 @@
 import express from 'express'
 import User from '../models/User'
-
 const router = express.Router()
+// const User = require('../models/User')
 
-function createRecord (model, data) {
-  model.create(data, (err, post) => {
-    if (err) return err
-    return post
-  })
-}
 /* POST registration info. */
-router.post('/', (req, res) => {
-  res.sendStatus(201)
+router.post('/', (req, res, next) => {
+  console.log(req.body.subscription)
+  User.create(req.body.subscription, (err, post) => {
+    if (err) return next(err)
+    res.json(post)
+  })
 })
 
 export default router

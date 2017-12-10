@@ -5,9 +5,13 @@ const Schema = mongoose.Schema
 
 // create a schema
 const userSchema = new Schema({
-  push_reg_info: Object,
-  created_at: Date,
-  updated_at: Date
+  endpoint: String,
+  expirationTime: String,
+  keys: {
+    p256dh: String,
+    auth: String
+  },
+  createdAt: { type: Date, default: new Date().toLocaleString() }
 })
 
 // the schema is useless so far
