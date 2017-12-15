@@ -29,9 +29,9 @@ router.post('/', (req, res) => {
     })
     .catch((err) => {
       if (err.statusCode) {
-        res.status(err.statusCode).send(err.body)
+        res.status(err.status).send(err.body)
       } else {
-        res.status(400).send(err.message)
+        res.status(err.status).send(err.message)
       }
     })
 })

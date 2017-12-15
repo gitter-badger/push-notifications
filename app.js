@@ -1,3 +1,5 @@
+import dotenv from 'dotenv'
+import opbeat from 'opbeat'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import Debug from 'debug'
@@ -11,29 +13,24 @@ import register from './routes/register'
 import send from './routes/send'
 import mongoose from 'mongoose'
 
-// Connect to DB
-mongoose.connect(process.env.DB)
-mongoose.connection.on('open', (ref) => {
-  return console.log('Connected to mongo server.')
-})
-mongoose.connection.on('error', function (err) {
-  console.log('Could not connect to mongo server!')
-  return console.log(err)
-})
-// add this to the VERY top of the first file loaded in your app
-const opbeat = require('opbeat').start({
+// Init env
+dotenv.config()
+
+// Init opBeat error logger
+opbeat.start({
   appId: '76bfe95471',
   organizationId: 'bf09f7ac168f48adb9a7acce37ecfde0',
   secretToken: '841a590acc78fe16275fbb613956fc8871f0085f'
 })
 
-const result = require('dotenv').config()
-if (result.error) {
-  throw result.error
-}
+// Connect to DB
+mongoose.Promise = global.Promise
+mongoose.connection.openUri(process.env.DB)
+
 const app = express()
 const debug = Debug('push-notifications:app')
 app.set('views', path.join(__dirname, 'views'))
+
 // view engine setup
 app.set('view engine', 'ejs')
 // uncomment after placing your favicon in /public

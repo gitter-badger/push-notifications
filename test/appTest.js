@@ -1,9 +1,25 @@
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import app from '../app'
+import mongoose from 'mongoose'
+import dotenv from 'dotenv'
 
+dotenv.config()
 chai.should()
 chai.use(chaiHttp)
+
+describe('Database Connection Test', () => {
+  it('It should connect to MongoDB', (done) => {
+    mongoose.Promise = global.Promise
+    mongoose.connection.openUri(process.env.DB)
+    const db = mongoose.connection
+    db.on('error', console.error.bind(console, 'Connection Error'))
+    db.once('open', () => {
+
+    })
+    done()
+  })
+})
 
 /* Test the /GET route */
 describe('app index route', () => {
@@ -35,13 +51,14 @@ describe('register user', () => {
     chai.request(app)
       .post('/register')
       .send({
-        subscription: {'endpoint': 'https://fcm.googleapis.com/fcm/send/edjyQ8Jjsec:APA91bEibyGN5Ud5OX_5viRUFk6AnOMJoSGf6F_caHsKsISdJDbXLFXnmIVpKofpMUNhn0shlkfeJ7DRU9IEot_6xSMEUAa9OqS9HEwMA89RPmD6-eLYh1HjCy_qKTf5JswkeDwSLdQJ', 'expirationTime': null, 'keys': {'p256dh': 'BHfR5wE9kdV9-uCxG6HGGBCAM9MZq1SLZC7EqjuuUfUy7L1owWsLt5jZKBBVQKYDEMJPO1K7ogbsW8fbkqv-WVU=', 'auth': 'Gto8tU2AuLO2jSY1oYzz9w=='}}
+        subscription: process.env.REGISTER_INFO
       })
       .end((err, res) => {
         console.log(res.status)
-        // res.should.have.status(201)
+        res.should.have.status(400)
 
         if (err) {
+          res.should.have.status(400)
           console.error(err)
         }
       })
@@ -54,14 +71,15 @@ describe('send push notification', () => {
     chai.request(app)
       .post('/send-msg')
       .send({
-        subscription: {'endpoint': 'https://fcm.googleapis.com/fcm/send/edjyQ8Jjsec:APA91bEibyGN5Ud5OX_5viRUFk6AnOMJoSGf6F_caHsKsISdJDbXLFXnmIVpKofpMUNhn0shlkfeJ7DRU9IEot_6xSMEUAa9OqS9HEwMA89RPmD6-eLYh1HjCy_qKTf5JswkeDwSLdQJ', 'expirationTime': null, 'keys': {'p256dh': 'BHfR5wE9kdV9-uCxG6HGGBCAM9MZq1SLZC7EqjuuUfUy7L1owWsLt5jZKBBVQKYDEMJPO1K7ogbsW8fbkqv-WVU=', 'auth': 'Gto8tU2AuLO2jSY1oYzz9w=='}},
+        subscription: process.env.REGISTER_INFO,
         data: 'Mocha testing'
       })
-      .end((err, res) => {
-        res.status.should.be.eql(200)
-        // res.text.should.be.eql({"success": true})
-        if (err) {
-          console.error('Error :', err)
+      .end((response, error) => {
+        console.log(response.status)
+        response.should.have.status(201)
+        if (error) {
+          response.should.have.status(400)
+          console.log(error)
         }
       })
     done()

@@ -6,7 +6,7 @@ const router = express.Router()
 /* POST registration info. */
 router.post('/', (req, res, next) => {
   console.log(req.body.subscription)
-  User.create(req.body.subscription, (err, post) => {
+  User.create(JSON.parse(req.body.subscription), (err, post) => {
     if (err) return next(err)
     res.json(post)
   })

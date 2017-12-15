@@ -3,8 +3,6 @@ html {
 }
 
 html, body {
-  width: 100%;
-  padding: 0;
   margin: 0;
 }
 
@@ -14,8 +12,8 @@ body {
 }
 
 header {
-  padding: 115px 0 32px 0;
-  background-color: #0099d5;
+  padding: 50px 0 32px 0;
+  background-color: #00d586;
   color: white;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }

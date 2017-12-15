@@ -5,7 +5,7 @@ const applicationServerPrivateKey = 'TV7TykD-S7PIEG8MPfBHht5iwmz4rXpX584MnxDzuSU
 const pushButton = document.querySelector('.js-push-btn')
 
 let isSubscribed = false
-let swRegistration = null
+let serviceWorkerRegistrationistration = null
 
 function urlB64ToUint8Array (base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4)
@@ -24,20 +24,36 @@ function urlB64ToUint8Array (base64String) {
 
 function updateBtn () {
   if (isSubscribed) {
-    pushButton.textContent = 'Push Bildirimlerini Kapat'
+    pushButton.textContent = 'Unregister from Push Notifications'
   } else {
-    pushButton.textContent = 'Push Bildirimlerini Aç'
+    pushButton.textContent = 'Register to Push Notifications'
   }
 
   pushButton.disabled = false
 }
 
-function updateSubscriptionOnServer (subscription) {
+function sendToServer (subscription, option) {
+  let URL = ''
+  switch (option) {
+    case 'new':
+      URL = '/register'
+      break
+    case 'update':
+      URL = '/update'
+      break
+    case 'delete':
+      URL = '/unregister'
+      break
+    default:
+      console.log('Unexpected error')
+      break
+  }
   fetch('/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
+    mode: 'no-cors',
     body: JSON.stringify({subscription: subscription})
   })
 
@@ -53,9 +69,10 @@ function updateSubscriptionOnServer (subscription) {
   }
 }
 function unsubscribeUser () {
-  swRegistration.pushManager.getSubscription()
+  serviceWorkerRegistrationistration.pushManager.getSubscription()
     .then(function (subscription) {
       if (subscription) {
+        sendToServer(subscription)
         return subscription.unsubscribe()
       }
     })
@@ -63,8 +80,6 @@ function unsubscribeUser () {
       console.log('Error unsubscribing', error)
     })
     .then(function () {
-      // updateSubscriptionOnServer(null)
-
       console.log('User is unsubscribed.')
       isSubscribed = false
 
@@ -74,18 +89,22 @@ function unsubscribeUser () {
 
 function subscribeUser () {
   const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey)
-  swRegistration.pushManager.subscribe({
+  serviceWorkerRegistrationistration.pushManager.subscribe({
     userVisibleOnly: true,
     applicationServerKey
   })
     .then((subscription) => {
       console.log('User is subscribed')
 
-      updateSubscriptionOnServer(subscription)
+      sendToServer(subscription)
 
       isSubscribed = true
-
       updateBtn()
+      window.scroll({
+        top: 620,
+        left: 0,
+        behavior: 'smooth'
+      })
     })
     .catch((err) => {
       console.log('Failed to subscribe the user: ', err)
@@ -93,7 +112,7 @@ function subscribeUser () {
     })
 }
 
-function initializeUI () {
+function init () {
   pushButton.addEventListener('click', () => {
     pushButton.disabled = true
     if (isSubscribed) {
@@ -104,11 +123,11 @@ function initializeUI () {
   })
 
   // Set the initial subscription value
-  swRegistration.pushManager.getSubscription()
+  serviceWorkerRegistrationistration.pushManager.getSubscription()
     .then((subscription) => {
       isSubscribed = !(subscription === null)
 
-      updateSubscriptionOnServer(subscription)
+      sendToServer(subscription)
 
       if (isSubscribed) {
         console.log('User IS subscribed.')
@@ -124,11 +143,11 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
   console.log('Service Worker and Push is supported')
 
   navigator.serviceWorker.register('public/javascripts/service-worker.js')
-    .then((swReg) => {
-      console.log('Service Worker is registered', swReg)
+    .then((serviceWorkerRegistration) => {
+      console.log('Service Worker is registered', serviceWorkerRegistration)
 
-      swRegistration = swReg
-      initializeUI()
+      serviceWorkerRegistrationistration = serviceWorkerRegistration
+      init()
     })
     .catch((error) => {
       console.error('Service Worker Error', error)
