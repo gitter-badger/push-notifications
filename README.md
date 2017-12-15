@@ -31,3 +31,8 @@ Service hosted at : push.setrowid.com
 * Generate [VAPID](https://github.com/web-push-libs/web-push) keys using WebCrypto or OpenSSL at backend
 * Get your ***PublicKey** into registration code
 * Store ***pub/priv** pair in ***.env** file (ignored, you must create before launching app)
+
+## Demo
+
+Hosted on RaspberryPi
+[RaspberryPi](https://fattier-galago-5339.dataplicity.io/)
