@@ -1,5 +1,7 @@
 ## push-notification service
 
+[![Join the chat at https://gitter.im/push-notifications/Lobby](https://badges.gitter.im/push-notifications/Lobby.svg)](https://gitter.im/push-notifications/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![bitHound Dependencies](https://www.bithound.io/github/Semyonic/push-notifications/badges/dependencies.svg)](https://www.bithound.io/github/Semyonic/push-notifications/master/dependencies/npm)
